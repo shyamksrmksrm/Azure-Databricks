@@ -1,0 +1,10 @@
+{
+  "name": "Daily ETL Pipeline",
+  "tasks": [
+    {"task_key": "ingest", "notebook_task": {"notebook_path": "notebooks/01_raw_ingest_autoloader"}, "cluster_key": "main"},
+    {"task_key": "bronze_to_silver", "depends_on": [{"task_key": "ingest"}], "notebook_task": {"notebook_path": "notebooks/02_bronze_to_silver"}, "cluster_key": "main"},
+    {"task_key": "scd2", "depends_on": [{"task_key": "bronze_to_silver"}], "notebook_task": {"notebook_path": "notebooks/03_silver_to_gold_scd2"}, "cluster_key": "main"},
+    {"task_key": "agg", "depends_on": [{"task_key": "scd2"}], "notebook_task": {"notebook_path": "notebooks/04_gold_aggregations"}, "cluster_key": "main"}
+  ],
+  "clusters": [{"cluster_key": "main", "existing_cluster_id": "<your-cluster-id>"}]
+}
